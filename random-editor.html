@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Transformed Text Editor</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #111;
+      color: white;
+      padding: 20px;
+    }
+
+    #editor {
+      width: 100%;
+      min-height: 200px;
+      border: 2px solid #444;
+      padding: 10px;
+      background: #222;
+      outline: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    span.char {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Random Transformed Text Editor</h2>
+<div id="editor" contenteditable="true"></div>
+
+<script>
+  const editor = document.getElementById('editor');
+
+  editor.addEventListener('keypress', (e) => {
+    e.preventDefault();
+
+    const char = e.key;
+    if (char.length !== 1) return;
+
+    const span = document.createElement('span');
+    span.classList.add('char');
+    span.textContent = char;
+
+    // Random rotation (0–180 deg)
+    const rotation = Math.floor(Math.random() * 181);
+
+    // Random mirroring
+    const mirror = Math.random() < 0.5 ? -1 : 1;
+
+    span.style.transform = `rotate(${rotation}deg) scaleX(${mirror})`;
+
+    // Insert at current caret position
+    insertAtCaret(span);
+  });
+
+  function insertAtCaret(node) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(node);
+
+    // Move caret after inserted node
+    const newRange = document.createRange();
+    newRange.setStartAfter(node);
+    newRange.setEndAfter(node);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+  }
+</script>
+
+</body>
+</html>
