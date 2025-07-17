@@ -42,20 +42,26 @@
     const char = e.key;
     if (char.length !== 1) return;
 
+    // Create character span
     const span = document.createElement('span');
     span.classList.add('char');
     span.textContent = char;
 
-    // Random rotation (0–180 deg)
     const rotation = Math.floor(Math.random() * 181);
-
-    // Random mirroring
     const mirror = Math.random() < 0.5 ? -1 : 1;
 
     span.style.transform = `rotate(${rotation}deg) scaleX(${mirror})`;
 
-    // Insert at current caret position
+    // Create space span
+    const space = document.createElement('span');
+    space.classList.add('char');
+    space.innerHTML = '&nbsp;';
+    space.style.display = 'inline-block';
+    space.style.width = '0.5em'; /* adjust for more or less space */
+
+    // Insert character and space
     insertAtCaret(span);
+    insertAtCaret(space);
   });
 
   function insertAtCaret(node) {
