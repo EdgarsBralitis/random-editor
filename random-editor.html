@@ -1,8 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Transformed Text Editor</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #111;
+      color: white;
+      padding: 20px;
+    }
+
+    #editor {
+      width: 100%;
+      min-height: 200px;
+      border: 2px solid #444;
+      padding: 10px;
+      background: #222;
+      outline: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    span.char {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Random Transformed Text Editor</h2>
+<div id="editor" contenteditable="true"></div>
+
 <script>
   const editor = document.getElementById('editor');
 
   editor.addEventListener('keydown', (e) => {
-    // Only process visible characters (a-z, numbers, symbols)
+    // Allow special keys (Enter, Backspace, arrows, etc.)
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const br = document.createElement("br");
+      insertAtCaret(br);
+      return;
+    }
+
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
 
@@ -29,7 +71,6 @@
       insertAtCaret(span);
       insertAtCaret(space);
     }
-    // Allow Enter, Backspace, etc. to work normally
   });
 
   function insertAtCaret(node) {
@@ -47,3 +88,6 @@
     sel.addRange(newRange);
   }
 </script>
+
+</body>
+</html>
